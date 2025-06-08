@@ -1,15 +1,42 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/IamPrommate/chat-it/repository"
+	"github.com/IamPrommate/chat-it/routes"
+	"github.com/IamPrommate/chat-it/utils"
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+)
 
 func main() {
-    r := gin.Default()
+	r := gin.Default()
+	routes.SetupRoutes(r)
 
-    r.GET("/", func(c *gin.Context) {
-        c.JSON(200, gin.H{
-            "message": "Hello Gin!",
-        })
-    })
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
-    r.Run() // listen and serve on 0.0.0.0:8080
+	mongoURI := os.Getenv("MONGO_URI")
+	if mongoURI == "" {
+		log.Fatal("MONGO_URI is not set in .env")
+	}
+
+	utils.InitMongo()                      // sets utils.Client internally
+	repository.SetupUserRepo(utils.Client) // pass it to the repository
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3001"
+	}
+
+	fmt.Println("Server is running on PORT:", port)
+	err = r.Run(":" + port)
+	if err != nil {
+		log.Fatalf("Server failed to start: %v", err)
+	}
 }
