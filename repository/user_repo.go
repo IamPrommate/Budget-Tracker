@@ -12,10 +12,6 @@ import (
 
 var userCollection *mongo.Collection
 
-// func SetupUserRepo() {
-// 	userCollection = utils.Client.Database("chatit_db").Collection("users")
-// }
-
 func SetupUserRepo(client *mongo.Client) {
 	userCollection = client.Database("chatit_db").Collection("users")
 }
@@ -38,10 +34,7 @@ func FindUserByName(ctx context.Context, name string) (*models.User, error) {
 }
 
 func InsertUser(ctx context.Context, username, password string) error {
-	user := models.User{
-		Username: username,
-		Password: password,
-	}
+	var user models.User
 
 	_, err := userCollection.InsertOne(ctx, user)
 	return err

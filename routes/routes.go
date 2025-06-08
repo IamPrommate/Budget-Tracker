@@ -8,4 +8,6 @@ import (
 func SetupRoutes(r *gin.Engine) {
 	r.POST("/login", controllers.Login)
 	r.POST("/insertUser", controllers.InsertUser)
+	r.POST("/addBudget", controllers.AddBudget)
+	r.GET("/viewBudget", controllers.ViewBudget)
 }

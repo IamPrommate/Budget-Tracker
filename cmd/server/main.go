@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/IamPrommate/chat-it/middleware"
 	"github.com/IamPrommate/chat-it/repository"
 	"github.com/IamPrommate/chat-it/routes"
 	"github.com/IamPrommate/chat-it/utils"
@@ -14,6 +15,7 @@ import (
 
 func main() {
 	r := gin.Default()
+	r.Use(middleware.AuthMiddleware())
 	routes.SetupRoutes(r)
 
 	err := godotenv.Load()
@@ -26,8 +28,9 @@ func main() {
 		log.Fatal("MONGO_URI is not set in .env")
 	}
 
-	utils.InitMongo()                      // sets utils.Client internally
-	repository.SetupUserRepo(utils.Client) // pass it to the repository
+	utils.InitMongo()                        // sets utils.Client internally
+	repository.SetupUserRepo(utils.Client)   // pass it to the repository
+	repository.SetupBudgetRepo(utils.Client) // pass it to the repository
 
 	port := os.Getenv("PORT")
 	if port == "" {

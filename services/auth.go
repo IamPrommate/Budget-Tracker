@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/IamPrommate/chat-it/repository"
+	"github.com/IamPrommate/chat-it/utils"
 )
 
 func InsertUser(username, password string) error {
@@ -28,7 +29,12 @@ func InsertUser(username, password string) error {
 		return err
 	}
 
-	return repository.InsertUser(ctx, username, password)
+	hashedPassword, err := utils.GenerateFromPassword([]byte(password), 4)
+	if err != nil {
+		return err
+	}
+
+	return repository.InsertUser(ctx, username, string(hashedPassword))
 }
 
 func Login(username, password string) (string, error) {
@@ -50,10 +56,15 @@ func Login(username, password string) (string, error) {
 		return "", err
 	}
 
-	if user.Password != password {
+	err = utils.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if err != nil {
 		return "", errors.New("invalid credentials")
 	}
 
-	// In real app, generate a JWT here
-	return "abc123", nil
+	token, err := utils.CreateJwtToken(user.ID.Hex(), user.Username)
+	if err != nil {
+		return "", errors.New("error create jwt token")
+	}
+
+	return token, err
 }
