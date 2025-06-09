@@ -2,7 +2,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Eye, EyeOff, DollarSign, TrendingUp, PieChart } from 'lucide-react';
 
 // Dashboard Preview (for authenticated users)
-export const Dashboard: React.FC = () => {
+const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
 
   return (

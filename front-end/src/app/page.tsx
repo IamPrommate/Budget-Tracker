@@ -1,7 +1,7 @@
 'use client';
 
 import { AuthPage } from '@/components/auth/AuthPage';
-import { Dashboard } from '@/components/dashboard/Dashboard';
+import BudgetDashboard from '@/components/dashboard/BudgetDashboard';
 import { useAuth } from '@/context/AuthContext';
 import React from 'react';
 
@@ -9,7 +9,7 @@ import React from 'react';
 const BudgetTrackerApp: React.FC = () => {
   const { isAuthenticated } = useAuth();
 
-  return isAuthenticated ? <Dashboard /> : <AuthPage />;
+  return isAuthenticated ? <BudgetDashboard /> : <AuthPage />;
 };
 
 export default BudgetTrackerApp;

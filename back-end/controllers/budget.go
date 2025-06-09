@@ -19,6 +19,7 @@ func AddBudget(c *gin.Context) {
 	}
 
 	userID, exists := c.Get("userId")
+
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User ID not found in token"})
 		return

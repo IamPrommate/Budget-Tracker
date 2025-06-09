@@ -14,3 +14,10 @@ type Expense struct {
 	Date        time.Time          `bson:"date"`
 	Description string             `bson:"description,omitempty"`
 }
+
+type AddExpense struct {
+	Amount      float64   `bson:"amount"`
+	Category    string    `bson:"category"`
+	Date        time.Time `bson:"date"`
+	Description string    `bson:"description,omitempty"`
+}

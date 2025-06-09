@@ -19,5 +19,6 @@ func SetupRoutes(r *gin.Engine) {
 		auth.GET("/budget", controllers.ViewBudget)
 		auth.PUT("/budget/:id", controllers.UpdateBudget)
 		auth.DELETE("/budget/:id", controllers.DeleteBudget)
+		auth.POST("/expense", controllers.AddExpense)
 	}
 }

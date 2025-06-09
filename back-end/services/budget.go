@@ -10,14 +10,14 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func AddBudget(userID string, request models.RequestBudget) error {
-	objID, err := primitive.ObjectIDFromHex(userID)
+func AddBudget(userId string, request models.RequestBudget) error {
+	objUserId, err := primitive.ObjectIDFromHex(userId)
 	if err != nil {
 		return err
 	}
 
 	budget := models.Budget{
-		UserID:   objID,
+		UserID:   objUserId,
 		Category: request.Category,
 		Limit:    request.Budget,
 		Month:    request.Month,
