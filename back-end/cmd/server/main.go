@@ -8,12 +8,22 @@ import (
 	"github.com/IamPrommate/chat-it/repository"
 	"github.com/IamPrommate/chat-it/routes"
 	"github.com/IamPrommate/chat-it/utils"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
 func main() {
 	r := gin.Default()
+
+	// CORS middleware - allow your frontend origin and methods
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:4000"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		AllowCredentials: true,
+	}))
+
 	routes.SetupRoutes(r)
 
 	err := godotenv.Load()

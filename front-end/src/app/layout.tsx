@@ -1,0 +1,18 @@
+import { AuthProvider } from '@/context/AuthContext';
+import './globals.css';
+import { ReactNode } from 'react';
+
+export const metadata = {
+  title: 'Budget Tracker',
+  description: 'A simple budget tracking app',
+};
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
+    </html>
+  );
+}
