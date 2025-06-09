@@ -14,10 +14,6 @@ func InsertUser(username, password string) error {
 	username = strings.TrimSpace(username)
 	password = strings.TrimSpace(password)
 
-	if username == "" || password == "" {
-		return errors.New("username and password are required")
-	}
-
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

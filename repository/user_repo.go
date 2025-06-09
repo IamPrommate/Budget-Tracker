@@ -20,7 +20,10 @@ var ErrUserNotFound = errors.New("user not found")
 
 func FindUserByName(ctx context.Context, name string) (*models.User, error) {
 	var user models.User
-	err := userCollection.FindOne(ctx, bson.M{"username": name}).Decode(&user)
+
+	filter := bson.M{"username": name}
+
+	err := userCollection.FindOne(ctx, filter).Decode(&user)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			fmt.Printf("User not found: %s\n", name)
@@ -34,7 +37,10 @@ func FindUserByName(ctx context.Context, name string) (*models.User, error) {
 }
 
 func InsertUser(ctx context.Context, username, password string) error {
-	var user models.User
+	user := models.User{
+		Username: username,
+		Password: password,
+	}
 
 	_, err := userCollection.InsertOne(ctx, user)
 	return err

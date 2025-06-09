@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/IamPrommate/chat-it/middleware"
 	"github.com/IamPrommate/chat-it/repository"
 	"github.com/IamPrommate/chat-it/routes"
 	"github.com/IamPrommate/chat-it/utils"
@@ -15,7 +14,6 @@ import (
 
 func main() {
 	r := gin.Default()
-	r.Use(middleware.AuthMiddleware())
 	routes.SetupRoutes(r)
 
 	err := godotenv.Load()

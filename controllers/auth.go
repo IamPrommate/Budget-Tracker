@@ -38,6 +38,11 @@ func InsertUser(c *gin.Context) {
 		return
 	}
 
+	if request.Username == "" || request.Password == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Username and password are required"})
+		return
+	}
+
 	err := services.InsertUser(request.Username, request.Password)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

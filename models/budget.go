@@ -20,3 +20,9 @@ type RequestBudget struct {
 	Category string    `json:"category"`
 	Month    time.Time `json:"month"`
 }
+
+type BudgetUpdateRequest struct {
+	Budget   float64   `json:"budget"`
+	Category string    `json:"category"`
+	Month    time.Time `json:"month"`
+}

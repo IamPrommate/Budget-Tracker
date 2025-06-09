@@ -16,7 +16,7 @@ func AddBudget(userID string, request models.RequestBudget) error {
 		return err
 	}
 
-	var budget models.Budget = models.Budget{
+	budget := models.Budget{
 		UserID:   objID,
 		Category: request.Category,
 		Limit:    request.Budget,
@@ -26,20 +26,42 @@ func AddBudget(userID string, request models.RequestBudget) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	err = repository.AddBudget(ctx, budget)
-	if err != nil {
-		return errors.New("error adding budget")
-	}
-	return nil
+	return repository.AddBudget(ctx, budget)
 }
 
 func ViewBudgetById(userID string) ([]models.Budget, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	budget, err := repository.ViewBudgetById(ctx, userID)
+	return repository.ViewBudgetById(ctx, userID)
+}
+
+func UpdateBudgetById(userID string, id string, updates models.BudgetUpdateRequest) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	owns, err := repository.CheckBudgetOwnership(ctx, userID, id)
 	if err != nil {
-		return nil, errors.New("error viewing budget")
+		return err
 	}
-	return budget, nil
+	if !owns {
+		return errors.New("invalid budget owner")
+	}
+
+	return repository.UpdateBudgetById(ctx, id, updates)
+}
+
+func DeleteBudgetById(userID string, id string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	owns, err := repository.CheckBudgetOwnership(ctx, userID, id)
+	if err != nil {
+		return err
+	}
+	if !owns {
+		return errors.New("invalid budget owner")
+	}
+
+	return repository.DeleteBudgetById(ctx, id)
 }

@@ -26,7 +26,7 @@ func AddBudget(c *gin.Context) {
 
 	err := services.AddBudget(userID.(string), request)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to add budget"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -42,9 +42,65 @@ func ViewBudget(c *gin.Context) {
 
 	budget, err := services.ViewBudgetById(userID.(string))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to view"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, budget)
+}
+
+func UpdateBudget(c *gin.Context) {
+	id := c.Param("id")
+
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Budget ID is required"})
+		return
+	}
+
+	var input models.BudgetUpdateRequest
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	userID, exists := c.Get("userId")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User ID not found in token"})
+		return
+	}
+
+	err := services.UpdateBudgetById(userID.(string), id, input)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message":   "Budget updated successfully",
+		"budget_id": id,
+	})
+
+}
+
+func DeleteBudget(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Budget ID is required"})
+	}
+
+	userID, exists := c.Get("userId")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User ID not found in token"})
+		return
+	}
+
+	err := services.DeleteBudgetById(userID.(string), id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message":   "Budget delete sucessfully",
+		"budget_id": id,
+	})
 }
