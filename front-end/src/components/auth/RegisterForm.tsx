@@ -3,13 +3,19 @@ import { RegisterFormProps } from "@/types/auth";
 import { useState } from "react";
 import { Eye, EyeOff, DollarSign, TrendingUp, PieChart } from 'lucide-react';
 
+interface MyFormData {
+  username: string;
+  password: string;
+  confirmPassword: string;
+}
+
 // Register Form Component
 export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
-  const [formData, setFormData] = useState<FormData>({ 
-    username: '', 
-    password: '', 
-    confirmPassword: '' 
-  });
+  const [formData, setFormData] = useState<MyFormData>({
+  username: '',
+  password: '',
+  confirmPassword: ''
+});
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);

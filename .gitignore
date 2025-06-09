@@ -1,0 +1,26 @@
+# macOS system files
+.DS_Store
+
+# Node.js dependencies (frontend)
+frontend/node_modules/
+
+# React build output
+frontend/build/
+
+# Environment variables
+.env
+
+# Go build artifacts (backend)
+backend/bin/
+backend/*.exe
+backend/*.exe~
+backend/*.dll
+backend/*.so
+backend/*.dylib
+
+# Logs
+*.log
+
+# IDE/editor folders (optional, depending on what you use)
+.vscode/
+.idea/

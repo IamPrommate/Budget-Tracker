@@ -3,9 +3,15 @@ import { LoginFormProps } from "@/types/auth";
 import { useState } from "react";
 import { Eye, EyeOff, DollarSign, TrendingUp, PieChart } from 'lucide-react';
 
+interface MyForm {
+  username: string;
+  password: string;
+}
+
 // Login Form Component
 export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
-  const [formData, setFormData] = useState<FormData>({ username: '', password: '' });
+
+const [formData, setFormData] = useState<MyForm>({ username: '', password: '' });
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -63,7 +69,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToRegister }) => {
             onChange={handleChange}
             onKeyPress={handleKeyPress}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none transition-all focus:ring-2 focus:border-transparent"
-            style={{ '--tw-ring-color': '#34eb7d' }}
+        style={{ '--tw-ring-color': '#34eb7d' } as React.CSSProperties}
             onFocus={(e) => e.target.style.boxShadow = '0 0 0 2px rgba(52, 235, 125, 0.5)'}
             onBlur={(e) => e.target.style.boxShadow = 'none'}
             placeholder="Enter your username"
