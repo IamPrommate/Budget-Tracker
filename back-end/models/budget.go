@@ -7,22 +7,18 @@ import (
 )
 
 type Budget struct {
-	ID       primitive.ObjectID `bson:"_id,omitempty"`
-	UserID   primitive.ObjectID `bson:"user_id"`
-	Category string             `bson:"category"`
-	Limit    float64            `bson:"limit"`
-	Month    time.Time          `bson:"month"`
+	ID     primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	UserID primitive.ObjectID `bson:"user_id" json:"userId"`
+	Limit  float64            `bson:"limit" json:"limit"`
+	Month  time.Time          `bson:"month" json:"month"`
 }
 
 type RequestBudget struct {
-	Username string    `json:"username"`
-	Budget   float64   `json:"budget"`
-	Category string    `json:"category"`
-	Month    time.Time `json:"month"`
+	Limit float64   `json:"limit"`
+	Month time.Time `json:"month"`
 }
 
 type BudgetUpdateRequest struct {
-	Budget   float64   `json:"budget"`
-	Category string    `json:"category"`
-	Month    time.Time `json:"month"`
+	Limit float64   `json:"limit"`
+	Month time.Time `json:"month"`
 }

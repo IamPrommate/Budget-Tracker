@@ -3,7 +3,9 @@ import { ReactNode } from "react";
 // Types and Interfaces
 export interface User {
   username: string;
+  token: string;
 }
+
 
 export interface LoginResponse {
   message: string;

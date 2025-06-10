@@ -30,7 +30,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     if (savedToken && savedUser) {
       setToken(savedToken);
-      setUser(JSON.parse(savedUser));
+      const parsedUser = JSON.parse(savedUser);
+setUser(parsedUser);
+setToken(parsedUser.token);
     }
     
     setLoading(false);
@@ -43,11 +45,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       // Store token and user info
       localStorage.setItem('budget_tracker_token', token);
-      localStorage.setItem('budget_tracker_user', JSON.stringify({ username }));
+      localStorage.setItem('budget_tracker_user', JSON.stringify({ username, token }));
+
       
       setToken(token);
-      setUser({ username });
-      
+setUser({ username, token }); // ✅ now includes token
+
       return { success: true };
     } catch (error) {
       return { success: false, error: (error as Error).message };

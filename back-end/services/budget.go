@@ -17,10 +17,9 @@ func AddBudget(userId string, request models.RequestBudget) error {
 	}
 
 	budget := models.Budget{
-		UserID:   objUserId,
-		Category: request.Category,
-		Limit:    request.Budget,
-		Month:    request.Month,
+		UserID: objUserId,
+		Limit:  request.Limit,
+		Month:  request.Month,
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

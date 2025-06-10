@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/IamPrommate/chat-it/models"
@@ -17,6 +18,8 @@ func AddBudget(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return
 	}
+
+	log.Printf("Parsed request: %+v", request)
 
 	userID, exists := c.Get("userId")
 
@@ -47,6 +50,11 @@ func ViewBudget(c *gin.Context) {
 		return
 	}
 
+	if budget == nil {
+		c.JSON(http.StatusOK, []models.Budget{})
+		return
+	}
+
 	c.JSON(http.StatusOK, budget)
 }
 
@@ -59,6 +67,8 @@ func UpdateBudget(c *gin.Context) {
 	}
 
 	var input models.BudgetUpdateRequest
+	log.Println(input)
+
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return

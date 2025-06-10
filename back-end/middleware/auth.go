@@ -10,13 +10,23 @@ import (
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
-		tokenString := c.GetHeader("Authorization")
-		if tokenString == "" {
+		authorizationHeader := c.GetHeader("Authorization")
+		if authorizationHeader == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header missing"})
 			c.Abort()
 			return
 		}
+
+		// Expecting header format: "Bearer <token>"
+		const prefix = "Bearer "
+		if len(authorizationHeader) <= len(prefix) || authorizationHeader[:len(prefix)] != prefix {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header format must be Bearer {token}"})
+			c.Abort()
+			return
+		}
+
+		// Extract token string after "Bearer "
+		tokenString := authorizationHeader[len(prefix):]
 
 		token, err := utils.ValidateJwtToken(tokenString)
 		if err != nil || !token.Valid {
@@ -46,5 +56,4 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		c.Next()
 	}
-
 }

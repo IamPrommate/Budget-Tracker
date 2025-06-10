@@ -46,9 +46,8 @@ func CheckBudgetOwnership(ctx context.Context, userID string, id string) (bool, 
 
 func AddBudget(ctx context.Context, budget models.Budget) error {
 	filter := bson.M{
-		"user_id":  budget.UserID,
-		"category": budget.Category,
-		"month":    budget.Month,
+		"user_id": budget.UserID,
+		"month":   budget.Month,
 	}
 
 	var existingBudget models.Budget
@@ -96,9 +95,8 @@ func UpdateBudgetById(ctx context.Context, id string, update models.BudgetUpdate
 
 	updateDoc := bson.M{
 		"$set": bson.M{
-			"budget":   update.Budget,
-			"category": update.Category,
-			"month":    update.Month,
+			"limit": update.Limit,
+			"month": update.Month,
 		},
 	}
 
